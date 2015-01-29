@@ -37,7 +37,6 @@ import Pieces.chessPiece;
 public class Board {
 	private HashMap<JLabel, chessPiece> map;
 	private Grid<chessPiece> gr;
-	private ArrayList<chessPiece> graveyard;
 	private Stack<Grid<chessPiece>> oldMoves;
 	private boolean bottomTurn;
 	
@@ -45,7 +44,6 @@ public class Board {
 	public Board(){
 		map = new HashMap<JLabel, chessPiece>();
 		gr = new Grid<chessPiece>(8,8);
-		graveyard = new ArrayList<chessPiece>();
 		oldMoves = new Stack<Grid<chessPiece>>();
 		bottomTurn = true;
 	}
@@ -60,15 +58,6 @@ public class Board {
 	//Returns the grid
 	public Grid<chessPiece> getGrid(){
 		return gr;
-	}
-	
-	//Returns an ArrayList with all dead pieces for a given team
-	public ArrayList<chessPiece> getGraveyard(boolean team){
-		ArrayList<chessPiece> temp = new ArrayList<chessPiece>();
-		for(chessPiece piece : graveyard)
-			if(piece.getTeam() == team)
-				temp.add(piece);
-		return temp;
 	}
 	
 	public ArrayList<Integer> getValidMoveLocations(JLabel grabbedLabel){
@@ -131,7 +120,6 @@ public class Board {
 			gr=oldMoves.get(0);
 			oldMoves.clear();
 			oldMoves.push(gr);
-			graveyard.clear();
 			bottomTurn=true;
 		}
 	}
@@ -320,12 +308,9 @@ public class Board {
 	public void remove(JLabel a){
 		chessPiece temp = map.get(a);
 		if(temp != null){
-			graveyard.add(temp);
 			temp.remove();
 		}
-	}
-
-	
+	}	
 	
 /*	public boolean causesCheck(chessPiece piece, Location newLoc){
 		if(piece == null || newLoc == null){
